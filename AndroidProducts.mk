@@ -17,4 +17,4 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/twrp_RMX3195.mk
+    $(LOCAL_DIR)/twrp_even.mk
