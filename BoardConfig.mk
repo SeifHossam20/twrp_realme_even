@@ -143,6 +143,7 @@ TW_SCREEN_BLANK_ON_BOOT := true
 #TW_Y_OFFSET := 50
 #TW_H_OFFSET := -50
 TARGET_USES_MKE2FS := true
+TW_INCLUDE_LOGICAL := my_product my_engineering my_company my_carrier my_region my_heytap my_stock my_preload my_bigball
 TW_EXCLUDE_TWRPAPP := true
 TW_OZIP_DECRYPT_KEY := 0000
 
