@@ -1,28 +1,54 @@
 # mount point    fstype    device                         flags
-/recovery        emmc      /dev/block/by-name/recovery    flags=backup
-/boot            emmc      /dev/block/by-name/boot
-/cache           ext4      /dev/block/by-name/cache
-/dtbo            emmc      /dev/block/by-name/dtbo        flags=backup
-/vbmeta          emmc      /dev/block/by-name/vbmeta      flags=backup;flashimg
-/persist         ext4      /dev/block/by-name/persist     flags=backup
+/system_root            emmc    /dev/block/mapper/system       flags=display="System_root";flashimg=1;backup=1
+/system_image           emmc    /dev/block/mapper/system       flags=display="System image";flashimg=1;backup=1
+/vendor_image           emmc    /dev/block/mapper/vendor       flags=display="Vendor image";flashimg=1;backup=1
+/product_image          emmc    /dev/block/mapper/product      flags=display="Product image";flashimg=1;backup=1
+/odm_image              emmc    /dev/block/mapper/odm          flags=display="Odm image";flashimg=1;backup=1
+/system_ext             ext4    /dev/block/mapper/system_ext          flags=display="System_ext image";flashimg=1;backup=1
+
+# realme partition
+# /my_product             ext4    /dev/block/mapper/my_product             flags=display="my_product";flashimg=1;backup=1;wipeingui
+# /my_engineering         ext4    /dev/block/mapper/my_engineering         flags=display="my_engineering";flashimg=1;backup=1;wipeingui
+# /my_company             ext4    /dev/block/mapper/my_company             flags=display="my_company";flashimg=1;backup=1;wipeingui
+# /my_carrier             ext4    /dev/block/mapper/my_carrier             flags=display="my_carrier";flashimg=1;backup=1;wipeingui
+# /my_region              ext4    /dev/block/mapper/my_region              flags=display="my_region";flashimg=1;backup=1;wipeingui
+# /my_heytap              ext4    /dev/block/mapper/my_heytap              flags=display="my_heytap";flashimg=1;backup=1;wipeingui
+# /my_stock               ext4    /dev/block/mapper/my_stock               flags=display="my_stock";flashimg=1;backup=1;wipeingui
+# /my_preload             ext4    /dev/block/mapper/my_preload             flags=display="my_preload";flashimg=1;backup=1;wipeingui
+# /my_bigball             ext4    /dev/block/mapper/my_bigball             flags=display="my_bigball";flashimg=1;backup=1;wipeingui
+
+
+# Partitions
+/data            f2fs      /dev/block/by-name/userdata      flags=fileencryption=aes-256-xts:aes-256-cts:v1
+/recovery        emmc      /dev/block/by-name/recovery    flags=backup;flashimg
+/boot            emmc      /dev/block/by-name/boot                    flags=backup=1;display="Boot";flashimg=1
+/cache           ext4      /dev/block/by-name/cache                   flags=backup=1;display="Cache";wipeingui
+/dtbo            emmc      /dev/block/by-name/dtbo                    flags=backup=1;display="DTBO";flashimg=1
+/vbmeta          emmc      /dev/block/by-name/vbmeta                  flags=backup=1;display="Vbmeta";flashimg=1
+/persist         emmc      /dev/block/by-name/persist                 flags=display="Persist";backup=1;mounttodecrypt
+/vbmeta_system   emmc      /dev/block/by-name/vbmeta_system           flags=display="Vbmeta System";flashimg=1;backup=1;
+/vbmeta_vendor   emmc      /dev/block/by-name/vbmeta_vendor           flags=display="Vbmeta Vendor";flashimg=1;backup=1;
+/metadata        ext4      /dev/block/by-name/md_udc       flags=display="Metadata"
 /tee1            emmc      /dev/block/by-name/tee1        flags=backup
 /tee2            emmc      /dev/block/by-name/tee2        flags=backup
 /persistent      emmc      /dev/block/by-name/frp         flags=backup
 /bootloader      emmc      /dev/block/by-name/lk          flags=backup
 /bootloader2     emmc      /dev/block/by-name/lk2         flags=backup
 /logo            emmc      /dev/block/by-name/logo        flags=backup
-/expdb           emmc      /dev/block/by-name/expdb
-/seccfg          emmc      /dev/block/by-name/seccfg
+/expdb           emmc      /dev/block/by-name/expdb       flags=backup
+/seccfg          emmc      /dev/block/by-name/seccfg      flags=backup
 
 # IMEI and modem related
 # below four partitions are ext4, but we are using only for backup so emmc
-/protect_f       emmc      /dev/block/by-name/protect1    flags=backup
-/protect_s       emmc      /dev/block/by-name/protect2    flags=backup
-/nvdata          emmc      /dev/block/by-name/nvdata      flags=backup
-/nvcfg           emmc      /dev/block/by-name/nvcfg       flags=backup
-/nvram           emmc      /dev/block/by-name/nvram       flags=backup
-/proinfo         emmc      /dev/block/by-name/proinfo     flags=backup
+/protect_f       ext4      /dev/block/by-name/protect1    flags=display="Protect_F";backup=1;
+/protect_s       ext4      /dev/block/by-name/protect2    flags=display="Protect_S";backup=1;
+/nvram           emmc      /dev/block/by-name/nvram       flags=display="NvRam";backup=1;
+/nvdata          ext4      /dev/block/by-name/nvdata      flags=display="NvData";backup=1;subpartitionof=/nvram;
+/nvcfg           ext4      /dev/block/by-name/nvcfg       flags=display="NvCfg";backup=1;subpartitionof=/nvram;
+/proinfo         emmc      /dev/block/by-name/proinfo     
 
-# Removable storage
-/external_sd     auto      /dev/block/mmcblk1p1    /dev/block/mmcblk1
-/usb-otg         auto      /dev/block/sda1         /dev/block/sda        flags=storage;wipeingui;removable
+
+# External-Devices (SDCARD | OTG)
+/external_sd    auto     /dev/block/mmcblk1p1  /dev/block/mmcblk1            flags=display="Micro_SDcard";storage;wipeingui;removable;fsflags="utf8"
+/usbotg        auto     /dev/block/sda1  /dev/block/sda                     flags=display="Usb_Otg";storage;wipeingui;removable;fsflags="utf8"
+
